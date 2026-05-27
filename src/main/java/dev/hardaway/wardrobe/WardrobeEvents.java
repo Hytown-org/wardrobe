@@ -10,8 +10,6 @@ import com.hypixel.hytale.builtin.asseteditor.assettypehandler.AssetStoreTypeHan
 import com.hypixel.hytale.builtin.asseteditor.assettypehandler.AssetTypeHandler;
 import com.hypixel.hytale.builtin.asseteditor.event.AssetEditorSelectAssetEvent;
 import com.hypixel.hytale.protocol.Model;
-import com.hypixel.hytale.protocol.Vector2f;
-import com.hypixel.hytale.protocol.Vector3f;
 import com.hypixel.hytale.protocol.packets.asseteditor.AssetEditorPreviewCameraSettings;
 import com.hypixel.hytale.protocol.packets.asseteditor.AssetEditorUpdateModelPreview;
 import com.hypixel.hytale.server.core.asset.type.item.config.AssetIconProperties;
@@ -26,6 +24,8 @@ import dev.hardaway.wardrobe.impl.cosmetic.CosmeticCategoryAsset;
 import dev.hardaway.wardrobe.impl.cosmetic.CosmeticSlotAsset;
 import dev.hardaway.wardrobe.impl.cosmetic.appearance.VariantAppearance;
 import dev.hardaway.wardrobe.impl.cosmetic.texture.VariantTextureConfig;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import javax.annotation.Nonnull;
 import java.nio.file.Path;

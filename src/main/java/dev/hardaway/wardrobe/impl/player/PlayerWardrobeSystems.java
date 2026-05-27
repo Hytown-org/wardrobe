@@ -14,7 +14,7 @@ import com.hypixel.hytale.server.core.cosmetics.CosmeticType;
 import com.hypixel.hytale.server.core.cosmetics.CosmeticsModule;
 import com.hypixel.hytale.server.core.cosmetics.PlayerSkin;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.inventory.InventoryChangeEvent;
+import com.hypixel.hytale.server.core.event.events.ecs.InventoryChangeEvent;
 import com.hypixel.hytale.server.core.inventory.InventoryComponent;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
@@ -132,36 +132,38 @@ public class PlayerWardrobeSystems {
 
             // Handle armor hiding
             Set<CosmeticType> hiddenHytaleSlots = new HashSet<>();
-            ItemContainer armorContainer = player.getInventory().getArmor();
-            for (short armorIndex = 0; armorIndex < armorContainer.getCapacity(); armorIndex++) {
-                ItemStack stack = armorContainer.getItemStack(armorIndex);
-                if (stack == null || stack.isEmpty()) continue;
+            ItemContainer armorContainer = player.getInventory().getArmor(); // TODO
+            if (armorContainer != null) {
+                for (short armorIndex = 0; armorIndex < armorContainer.getCapacity(); armorIndex++) {
+                    ItemStack stack = armorContainer.getItemStack(armorIndex);
+                    if (stack == null || stack.isEmpty()) continue;
 
-                ItemArmor armor = stack.getItem().getArmor();
-                if (armor == null)
-                    break;
+                    ItemArmor armor = stack.getItem().getArmor();
+                    if (armor == null)
+                        break;
 
-                ItemArmorSlot slot = armor.getArmorSlot();
-                boolean shouldHide = switch (slot) {
-                    case Head -> playerSettings.hideHelmet();
-                    case Chest -> playerSettings.hideCuirass();
-                    case Hands -> playerSettings.hideGauntlets();
-                    case Legs -> playerSettings.hidePants();
-                };
+                    ItemArmorSlot slot = armor.getArmorSlot();
+                    boolean shouldHide = switch (slot) {
+                        case Head -> playerSettings.hideHelmet();
+                        case Chest -> playerSettings.hideCuirass();
+                        case Hands -> playerSettings.hideGauntlets();
+                        case Legs -> playerSettings.hidePants();
+                    };
 
-                if (shouldHide)
-                    continue;
-
-                com.hypixel.hytale.protocol.ItemArmor protocolArmor = armor.toPacket();
-                if (protocolArmor.cosmeticsToHide == null)
-                    break;
-
-                for (com.hypixel.hytale.protocol.Cosmetic cosmetic : protocolArmor.cosmeticsToHide) {
-                    CosmeticType type = WardrobeUtil.protocolCosmeticToCosmeticType(cosmetic);
-                    if (type == null)
+                    if (shouldHide)
                         continue;
 
-                    hiddenHytaleSlots.add(type);
+                    com.hypixel.hytale.protocol.ItemArmor protocolArmor = armor.toPacket();
+                    if (protocolArmor.cosmeticsToHide == null)
+                        break;
+
+                    for (com.hypixel.hytale.protocol.Cosmetic cosmetic : protocolArmor.cosmeticsToHide) {
+                        CosmeticType type = WardrobeUtil.protocolCosmeticToCosmeticType(cosmetic);
+                        if (type == null)
+                            continue;
+
+                        hiddenHytaleSlots.add(type);
+                    }
                 }
             }
 
@@ -183,7 +185,7 @@ public class PlayerWardrobeSystems {
 
             Model contextModel = context.getPlayerModel();
             return new Model(
-                    "Wardrobe_" + player.getDisplayName() + "_" + contextModel.getModelAssetId(),
+                    "Wardrobe_" + playerRef.getUuid() + "_" + contextModel.getModelAssetId(),
                     contextModel.getScale(),
                     contextModel.getRandomAttachmentIds(),
                     modelAttachments.toArray(ModelAttachment[]::new), // Skin attachments
