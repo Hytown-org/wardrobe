@@ -1,9 +1,9 @@
 {
   "Main": "dev.hardaway.wardrobe.WardrobePlugin",
-  "Group": "${mod_group}",
-  "Name": "${mod_name}",
-  "Version": "${mod_version}",
-  "Description": "${mod_description}",
+  "Group": "Hardaway",
+  "Name": "Wardrobe",
+  "Version": "${version}",
+  "Description": "Enables creators to add customizable cosmetics, such as hairstyles, accessories, clothing, and custom player models, into Hytale with asset packs.",
   "Website": "https://github.com/jacksonhardaway/wardrobe",
   "Authors": [
     {
@@ -16,7 +16,7 @@
       "Url": "https://www.curseforge.com/members/tazer/projects"
     }
   ],
-  "ServerVersion": "~${hytale_version}",
+  "ServerVersion": "${serverVersion}",
   "Dependencies": {
     "Hytale:AssetModule": "*",
     "Hytale:EntityModule": "*",

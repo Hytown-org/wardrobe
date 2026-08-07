@@ -6,6 +6,7 @@ import com.hypixel.hytale.assetstore.AssetStore;
 import com.hypixel.hytale.assetstore.codec.AssetBuilderCodec;
 import com.hypixel.hytale.assetstore.codec.ContainedAssetCodec;
 import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
+import com.hypixel.hytale.assetstore.map.IndexedLookupTableAssetMap;
 import com.hypixel.hytale.assetstore.map.JsonAssetWithMap;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -27,7 +28,7 @@ import dev.hardaway.wardrobe.api.property.validator.WardrobeValidators;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-public class CosmeticSlotAsset implements WardrobeCosmeticSlot, JsonAssetWithMap<String, DefaultAssetMap<String, CosmeticSlotAsset>> {
+public class CosmeticSlotAsset implements WardrobeCosmeticSlot, JsonAssetWithMap<String, IndexedLookupTableAssetMap<String, CosmeticSlotAsset>> {
 
     public static final AssetBuilderCodec<String, CosmeticSlotAsset> CODEC = AssetBuilderCodec
             .builder(CosmeticSlotAsset.class, CosmeticSlotAsset::new,
@@ -107,7 +108,7 @@ public class CosmeticSlotAsset implements WardrobeCosmeticSlot, JsonAssetWithMap
 
     public static final Codec<String> CHILD_ASSET = new ContainedAssetCodec<>(CosmeticSlotAsset.class, CODEC);
 
-    public static final Supplier<AssetStore<String, CosmeticSlotAsset, DefaultAssetMap<String, CosmeticSlotAsset>>> ASSET_STORE = WardrobePlugin.createAssetStore(CosmeticSlotAsset.class);
+    public static final Supplier<AssetStore<String, CosmeticSlotAsset, IndexedLookupTableAssetMap<String, CosmeticSlotAsset>>> ASSET_STORE = WardrobePlugin.createAssetStore(CosmeticSlotAsset.class);
     public static final ValidatorCache<String> VALIDATOR_CACHE = new ValidatorCache(new AssetKeyValidator(CosmeticSlotAsset.ASSET_STORE));
 
     public static DefaultAssetMap<String, CosmeticSlotAsset> getAssetMap() {

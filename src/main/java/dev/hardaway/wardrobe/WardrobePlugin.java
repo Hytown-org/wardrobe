@@ -2,7 +2,7 @@ package dev.hardaway.wardrobe;
 
 import com.hypixel.hytale.assetstore.AssetRegistry;
 import com.hypixel.hytale.assetstore.AssetStore;
-import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
+import com.hypixel.hytale.assetstore.map.IndexedLookupTableAssetMap;
 import com.hypixel.hytale.assetstore.map.JsonAssetWithMap;
 import com.hypixel.hytale.codec.lookup.Priority;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -101,20 +101,20 @@ public class WardrobePlugin extends JavaPlugin {
                 .register(Priority.DEFAULT, "Model", ModelAppearance.class, ModelAppearance.CODEC)
                 .register(Priority.NORMAL, "Variant", VariantAppearance.class, VariantAppearance.CODEC);
 
-        AssetRegistry.register(HytaleAssetStore.builder(CosmeticCategoryAsset.class, new DefaultAssetMap<>())
+        AssetRegistry.register(HytaleAssetStore.builder(CosmeticCategoryAsset.class, new IndexedLookupTableAssetMap<>(CosmeticCategoryAsset[]::new))
                 .setPath("Wardrobe/Categories")
                 .setCodec(CosmeticCategoryAsset.CODEC)
                 .setKeyFunction(CosmeticCategoryAsset::getId)
                 .build()
         );
-        AssetRegistry.register(HytaleAssetStore.builder(CosmeticSlotAsset.class, new DefaultAssetMap<>())
+        AssetRegistry.register(HytaleAssetStore.builder(CosmeticSlotAsset.class, new IndexedLookupTableAssetMap<>(CosmeticSlotAsset[]::new))
                 .setPath("Wardrobe/Slots")
                 .setCodec(CosmeticSlotAsset.CODEC)
                 .setKeyFunction(CosmeticSlotAsset::getId)
                 .loadsAfter(CosmeticCategoryAsset.class)
                 .build()
         );
-        AssetRegistry.register(HytaleAssetStore.builder(CosmeticAsset.class, new DefaultAssetMap<>())
+        AssetRegistry.register(HytaleAssetStore.builder(CosmeticAsset.class, new IndexedLookupTableAssetMap<>(CosmeticAsset[]::new))
                 .setPath("Wardrobe/Cosmetics")
                 .setCodec(CosmeticAsset.CODEC)
                 .setKeyFunction(CosmeticAsset::getId)
@@ -140,12 +140,12 @@ public class WardrobePlugin extends JavaPlugin {
         return playerWardrobeComponentType;
     }
 
-    public static <T extends JsonAssetWithMap<String, DefaultAssetMap<String, T>>> Supplier<AssetStore<String, T, DefaultAssetMap<String, T>>> createAssetStore(Class<T> clazz) {
+    public static <T extends JsonAssetWithMap<String, IndexedLookupTableAssetMap<String, T>>> Supplier<AssetStore<String, T, IndexedLookupTableAssetMap<String, T>>> createAssetStore(Class<T> clazz) {
         return new Supplier<>() {
-            AssetStore<String, T, DefaultAssetMap<String, T>> value;
+            AssetStore<String, T, IndexedLookupTableAssetMap<String, T>> value;
 
             @Override
-            public AssetStore<String, T, DefaultAssetMap<String, T>> get() {
+            public AssetStore<String, T, IndexedLookupTableAssetMap<String, T>> get() {
                 if (value == null)
                     value = AssetRegistry.getAssetStore(clazz);
                 return value;

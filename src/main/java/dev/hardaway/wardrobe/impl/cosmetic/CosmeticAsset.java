@@ -3,7 +3,7 @@ package dev.hardaway.wardrobe.impl.cosmetic;
 import com.hypixel.hytale.assetstore.AssetExtraInfo;
 import com.hypixel.hytale.assetstore.AssetStore;
 import com.hypixel.hytale.assetstore.codec.AssetCodecMapCodec;
-import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
+import com.hypixel.hytale.assetstore.map.IndexedLookupTableAssetMap;
 import com.hypixel.hytale.assetstore.map.JsonAssetWithMap;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -22,7 +22,7 @@ import dev.hardaway.wardrobe.api.property.validator.WardrobeValidators;
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public abstract class CosmeticAsset implements WardrobeCosmetic, JsonAssetWithMap<String, DefaultAssetMap<String, CosmeticAsset>> {
+public abstract class CosmeticAsset implements WardrobeCosmetic, JsonAssetWithMap<String, IndexedLookupTableAssetMap<String, CosmeticAsset>> {
 
     public static final BuilderCodec<CosmeticAsset> ABSTRACT_CODEC = BuilderCodec.abstractBuilder(CosmeticAsset.class)
             .append(
@@ -84,9 +84,9 @@ public abstract class CosmeticAsset implements WardrobeCosmetic, JsonAssetWithMa
             Codec.STRING, (t, k) -> t.id = k, t -> t.id, (t, data) -> t.data = data, t -> t.data, true
     );
 
-    public static final Supplier<AssetStore<String, CosmeticAsset, DefaultAssetMap<String, CosmeticAsset>>> ASSET_STORE = WardrobePlugin.createAssetStore(CosmeticAsset.class);
+    public static final Supplier<AssetStore<String, CosmeticAsset, IndexedLookupTableAssetMap<String, CosmeticAsset>>> ASSET_STORE = WardrobePlugin.createAssetStore(CosmeticAsset.class);
 
-    public static DefaultAssetMap<String, CosmeticAsset> getAssetMap() {
+    public static IndexedLookupTableAssetMap<String, CosmeticAsset> getAssetMap() {
         return ASSET_STORE.get().getAssetMap();
     }
 

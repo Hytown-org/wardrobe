@@ -4,7 +4,7 @@ import com.hypixel.hytale.assetstore.AssetExtraInfo;
 import com.hypixel.hytale.assetstore.AssetKeyValidator;
 import com.hypixel.hytale.assetstore.AssetStore;
 import com.hypixel.hytale.assetstore.codec.AssetBuilderCodec;
-import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
+import com.hypixel.hytale.assetstore.map.IndexedLookupTableAssetMap;
 import com.hypixel.hytale.assetstore.map.JsonAssetWithMap;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -19,7 +19,7 @@ import dev.hardaway.wardrobe.api.property.validator.WardrobeValidators;
 
 import java.util.function.Supplier;
 
-public class CosmeticCategoryAsset implements WardrobeCategory, JsonAssetWithMap<String, DefaultAssetMap<String, CosmeticCategoryAsset>> {
+public class CosmeticCategoryAsset implements WardrobeCategory, JsonAssetWithMap<String, IndexedLookupTableAssetMap<String, CosmeticCategoryAsset>> {
 
     public static final AssetBuilderCodec<String, CosmeticCategoryAsset> CODEC = AssetBuilderCodec
             .builder(CosmeticCategoryAsset.class, CosmeticCategoryAsset::new,
@@ -68,10 +68,10 @@ public class CosmeticCategoryAsset implements WardrobeCategory, JsonAssetWithMap
             })
             .build();
 
-    public static final Supplier<AssetStore<String, CosmeticCategoryAsset, DefaultAssetMap<String, CosmeticCategoryAsset>>> ASSET_STORE = WardrobePlugin.createAssetStore(CosmeticCategoryAsset.class);
+    public static final Supplier<AssetStore<String, CosmeticCategoryAsset, IndexedLookupTableAssetMap<String, CosmeticCategoryAsset>>> ASSET_STORE = WardrobePlugin.createAssetStore(CosmeticCategoryAsset.class);
     public static final ValidatorCache<String> VALIDATOR_CACHE = new ValidatorCache(new AssetKeyValidator(CosmeticCategoryAsset.ASSET_STORE));
 
-    public static DefaultAssetMap<String, CosmeticCategoryAsset> getAssetMap() {
+    public static IndexedLookupTableAssetMap<String, CosmeticCategoryAsset> getAssetMap() {
         return ASSET_STORE.get().getAssetMap();
     }
 
