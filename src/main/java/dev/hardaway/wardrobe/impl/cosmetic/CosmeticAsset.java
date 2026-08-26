@@ -15,11 +15,17 @@ import dev.hardaway.wardrobe.WardrobePlugin;
 import dev.hardaway.wardrobe.api.cosmetic.WardrobeContext;
 import dev.hardaway.wardrobe.api.cosmetic.WardrobeCosmetic;
 import dev.hardaway.wardrobe.api.cosmetic.WardrobeCosmeticSlot;
+import dev.hardaway.wardrobe.api.menu.variant.CosmeticOptionEntry;
+import dev.hardaway.wardrobe.api.menu.variant.CosmeticVariantEntry;
 import dev.hardaway.wardrobe.api.player.PlayerCosmetic;
 import dev.hardaway.wardrobe.api.property.WardrobeProperties;
 import dev.hardaway.wardrobe.api.property.validator.WardrobeValidators;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public abstract class CosmeticAsset implements WardrobeCosmetic, JsonAssetWithMap<String, IndexedLookupTableAssetMap<String, CosmeticAsset>> {
@@ -103,11 +109,21 @@ public abstract class CosmeticAsset implements WardrobeCosmetic, JsonAssetWithMa
     protected CosmeticAsset() {
     }
 
+    protected CosmeticAsset(String id) {
+        this.id = id;
+        this.hiddenCosmeticSlots = new String[0];
+    }
+
     public CosmeticAsset(String id, String cosmeticSlotId, String[] hiddenCosmeticSlots, WardrobeProperties properties) {
         this.id = id;
         this.cosmeticSlotId = cosmeticSlotId;
         this.hiddenCosmeticSlots = hiddenCosmeticSlots;
         this.properties = properties;
+    }
+
+    @Nonnull
+    public static CosmeticAsset getUnknownFor(String id) {
+        return new Unknown(id);
     }
 
     @Override
@@ -141,5 +157,26 @@ public abstract class CosmeticAsset implements WardrobeCosmetic, JsonAssetWithMa
     @Override
     public void applyCosmetic(WardrobeContext context, WardrobeCosmeticSlot slot, PlayerCosmetic playerCosmetic) {
         context.hideSlots(this.getHiddenCosmeticSlotIds());
+    }
+
+    private static final class Unknown extends CosmeticAsset {
+        private Unknown(String id) {
+            super(id);
+        }
+
+        @Override
+        public Map<String, CosmeticOptionEntry> getOptionEntries() {
+            return Collections.emptyMap();
+        }
+
+        @Override
+        public List<CosmeticVariantEntry> getVariantEntries(@Nullable String variantId) {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public void applyCosmetic(WardrobeContext context, WardrobeCosmeticSlot slot, PlayerCosmetic playerCosmetic) {
+            // Placeholder for removed assets; keep index slots stable.
+        }
     }
 }

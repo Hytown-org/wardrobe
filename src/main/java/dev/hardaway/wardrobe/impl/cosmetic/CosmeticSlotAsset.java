@@ -129,6 +129,13 @@ public class CosmeticSlotAsset implements WardrobeCosmeticSlot, JsonAssetWithMap
     private String selectedIcon;
     private int order = -1;
 
+    public CosmeticSlotAsset() {
+    }
+
+    public CosmeticSlotAsset(String id) {
+        this.id = id;
+    }
+
     @Override
     public String getId() {
         return id;

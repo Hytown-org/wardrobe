@@ -105,6 +105,7 @@ public class WardrobePlugin extends JavaPlugin {
                 .setPath("Wardrobe/Categories")
                 .setCodec(CosmeticCategoryAsset.CODEC)
                 .setKeyFunction(CosmeticCategoryAsset::getId)
+                .setReplaceOnRemove(CosmeticCategoryAsset::new)
                 .build()
         );
         AssetRegistry.register(HytaleAssetStore.builder(CosmeticSlotAsset.class, new IndexedLookupTableAssetMap<>(CosmeticSlotAsset[]::new))
@@ -112,6 +113,7 @@ public class WardrobePlugin extends JavaPlugin {
                 .setCodec(CosmeticSlotAsset.CODEC)
                 .setKeyFunction(CosmeticSlotAsset::getId)
                 .loadsAfter(CosmeticCategoryAsset.class)
+                .setReplaceOnRemove(CosmeticSlotAsset::new)
                 .build()
         );
         AssetRegistry.register(HytaleAssetStore.builder(CosmeticAsset.class, new IndexedLookupTableAssetMap<>(CosmeticAsset[]::new))
@@ -119,6 +121,7 @@ public class WardrobePlugin extends JavaPlugin {
                 .setCodec(CosmeticAsset.CODEC)
                 .setKeyFunction(CosmeticAsset::getId)
                 .loadsAfter(ModelAsset.class, CosmeticSlotAsset.class)
+                .setReplaceOnRemove(CosmeticAsset::getUnknownFor)
                 .build()
         );
 

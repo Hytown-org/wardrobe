@@ -85,6 +85,13 @@ public class CosmeticCategoryAsset implements WardrobeCategory, JsonAssetWithMap
     private String selectedIcon;
     private int order = -1;
 
+    public CosmeticCategoryAsset() {
+    }
+
+    public CosmeticCategoryAsset(String id) {
+        this.id = id;
+    }
+
     @Override
     public String getId() {
         return id;
