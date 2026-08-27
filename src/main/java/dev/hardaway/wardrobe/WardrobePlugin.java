@@ -16,6 +16,8 @@ import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.OpenCustomUIInteraction;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.chunk.section.BlockSection;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.hardaway.wardrobe.api.cosmetic.appearance.Appearance;
 import dev.hardaway.wardrobe.api.cosmetic.appearance.TextureConfig;
@@ -50,6 +52,23 @@ public class WardrobePlugin extends JavaPlugin {
         return instance;
     }
 
+    /**
+     * 0.6.0-pre.12+ removed World#getBlockRotationIndex; rotation now lives on
+     * the block's cubic chunk section. Returns 0 when the section is not loaded.
+     */
+    private static int getBlockRotationIndex(World world, BlockPosition blockPosition) {
+        var sectionRef = world.getChunkStore()
+                .getChunkSectionReferenceAtBlock(blockPosition.x, blockPosition.y, blockPosition.z);
+        if (sectionRef == null || !sectionRef.isValid()) {
+            return 0;
+        }
+        var blockSection = sectionRef.getStore().getComponent(sectionRef, BlockSection.getComponentType());
+        if (blockSection == null) {
+            return 0;
+        }
+        return blockSection.getRotationIndex(blockPosition.x & 31, blockPosition.y & 31, blockPosition.z & 31);
+    }
+
     @Override
     protected void setup() {
         OpenCustomUIInteraction.registerCustomPageSupplier(this, WardrobePage.class, "Wardrobe", (ref, componentAccessor, playerRef, context) -> {
@@ -59,7 +78,7 @@ public class WardrobePlugin extends JavaPlugin {
             ServerCameraSettings camera = WardrobeCamera.DEFAULT_CAMERA.toServerSettings(ref, componentAccessor);
 
             if (blockPosition != null) {
-                int rotationIndex = commandBuffer.getExternalData().getWorld().getBlockRotationIndex(blockPosition.x, blockPosition.y, blockPosition.z) + 2;
+                int rotationIndex = getBlockRotationIndex(commandBuffer.getExternalData().getWorld(), blockPosition) + 2;
                 float rotation = (float) ((Math.PI / 2) * rotationIndex);
 
                 Transform transform = commandBuffer.ensureAndGetComponent(ref, TransformComponent.getComponentType()).getTransform();
