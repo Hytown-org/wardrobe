@@ -6,27 +6,6 @@
   "MaxStack": 1,
   "ItemSoundSetId": "ISS_Items_Metal",
   "PlayerAnimationsId": "Block",
-  "Recipe": {
-    "Input": [
-      {
-        "Quantity": 4,
-        "ResourceTypeId": "Metal_Bars"
-      },
-      {
-        "Quantity": 3,
-        "ItemId": "Ingredient_Bar_Silver"
-      }
-    ],
-    "TimeSeconds": 3,
-    "BenchRequirement": [
-      {
-        "Categories": [
-          "Furniture_Misc"
-        ],
-        "Id": "Furniture_Bench"
-      }
-    ]
-  },
   "BlockType": {
     "CustomModelTexture": [
       {
