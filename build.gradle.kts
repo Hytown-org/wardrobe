@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.hardaway"
-version = "0.3.11-pre"
+version = "0.3.2"
 description = "Enables creators to add customizable cosmetics, such as hairstyles, accessories, clothing, and custom player models, into Hytale with asset packs."
 
 base.archivesName = "Wardrobe"
